@@ -28,7 +28,7 @@ router.get("/", (req, res) => {
   res.status(200).send(users);
 
 })
-// @route GET api/users/register
+// @route POST api/users/register
 // @desc  register user
 // @access Public
 router .post('/register', (req, res) => {
@@ -65,7 +65,7 @@ router .post('/register', (req, res) => {
           newUser
             .save()
             .then(user => res.json(user))
-            .catch(err => console.log(err));
+            .catch(err => console.log(`Error occured while trying to save user: ${err}`));
         })
       })
     }
