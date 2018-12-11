@@ -53,7 +53,7 @@ router .post('/register', (req, res) => {
 
       const newUser = new User({
         name: req.body.name,
-        email: req.body.email,
+        email: req.body.email.toLowerCase(),
         avatar,
         password: req.body.password
       });
@@ -78,20 +78,19 @@ router .post('/register', (req, res) => {
 router.post('/login', (req, res) => {
   // from validation/login.js
   const { errors, isValid } = validateLoginInput(req.body)
-
   // Check Validation
   if (!isValid) {
     return res.status(404).json(errors);
   }
 
-  const email = req.body.email;
+  const email = req.body.email.toLowerCase();
   const password = req.body.password;
 
   // Find user by email
   User.findOne({email}).then(user => {
     // Check for user
     if (!user) {
-      errors.email = "User not found"
+      errors.login = "Incorrect user/password combination"
       return res.status(404).json(errors)
     }
 
@@ -114,7 +113,7 @@ router.post('/login', (req, res) => {
           }
         )
       } else {
-        errors.password = "Password incorrect"
+        errors.login = "Incorrect user/password combination"
         return res.status(400).json(errors);
       }
     })
