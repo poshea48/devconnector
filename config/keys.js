@@ -1,7 +1,7 @@
 if (process.env.NODE_ENV === 'production') {
-  module.export = require('./keys_prod')
+  module.exports = require('./keys_prod')
 } else {
-  module.export = require('./keys_dev')
+  module.exports = require('./keys_dev')
 }
 
 module.exports = {
