@@ -1,14 +1,33 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { getCurrentProfile } from '../../actions/profileActions';
+import { getCurrentProfile, deleteAccount, deleteExperience, deleteEducation } from '../../actions/profileActions';
 import Spinner from '../common/Spinner';
 import isEmpty from '../../validation/is-empty';
 import { Link } from 'react-router-dom';
+import ProfileActions from './ProfileActions';
+import Experience from './Experience';
+import Education from './Education';
+
 
 class Dashboard extends React.Component {
   componentDidMount() {
     this.props.getCurrentProfile();
+  }
+
+  onDeleteClick = e => {
+    e.preventDefault();
+    this.props.deleteAccount();
+  }
+
+  onDeleteExperience = e => {
+    e.preventDefault();
+    this.props.deleteExperience(e.target.dataset.id)
+  }
+
+  onDeleteEducation = e => {
+    e.preventDefault();
+    this.props.deleteEducation(e.target.dataset.id)
   }
 
   render () {
@@ -32,7 +51,21 @@ class Dashboard extends React.Component {
           </div>
         )
       } else {
-        dashboardContent = <h4>DISPLAY PROFILE</h4>
+        dashboardContent = (
+          <div className="profile-content">
+            <p className="lead text-muted">
+              Welcome <Link to={`/profile/handle/${profile.handle}`}>{ user.name }</Link>
+            </p>
+            <ProfileActions />
+
+            <Experience experiences={profile.experience} onDeleteExperience={this.onDeleteExperience}/>
+            <div style={{ marginBottom: '60px' }} />
+            <Education education={profile.education} onDeleteEducation={this.onDeleteEducation}/>
+
+            <div style={{ marginBottom: '60px' }} />
+            <button onClick={this.onDeleteClick} className="btn btn-danger">Delete My Account</button>
+          </div>
+        )
       }
     }
     return (
@@ -52,6 +85,9 @@ class Dashboard extends React.Component {
 
 Dashboard.propTypes = {
   getCurrentProfile: PropTypes.func.isRequired,
+  deleteExperience: PropTypes.func.isRequired,
+  deleteEducation: PropTypes.func.isRequired,
+  deleteAccount: PropTypes.func.isRequired,
   auth: PropTypes.object.isRequired,
   profile: PropTypes.object.isRequired
 }
@@ -61,4 +97,4 @@ const mapStateToProps = state => ({
   auth: state.auth
 })
 
-export default connect(mapStateToProps, { getCurrentProfile })(Dashboard);
+export default connect(mapStateToProps, { getCurrentProfile, deleteExperience, deleteEducation, deleteAccount })(Dashboard);

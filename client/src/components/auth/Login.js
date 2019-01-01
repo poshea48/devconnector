@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { loginUser } from '../../actions/authActions';
+import { clearErrors } from '../../actions/clearErrorAction';
 import TextFieldGroup from '../common/TextFieldGroup'
 // import { withRouter } from 'react-router-dom'; // maybe not needed
 
@@ -91,11 +92,11 @@ class Login extends Component {
       </div>
     );
   }
-
 }
 
 Login.propTypes = {
   loginUser: PropTypes.func.isRequired,
+  clearErrors: PropTypes.func.isRequired,
   auth: PropTypes.object.isRequired,
   errors: PropTypes.object.isRequired
 }
@@ -105,4 +106,4 @@ const mapStateToProps = state => ({
   errors: state.errors
 })
 
-export default connect(mapStateToProps, { loginUser })(Login);
+export default connect(mapStateToProps, { loginUser, clearErrors })(Login);

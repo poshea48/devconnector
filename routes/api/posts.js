@@ -25,7 +25,6 @@ router.get('/', (req, res) => {
   Post.find()
   .sort({date: -1})
   .then(posts => {
-    console.log("made it into first then")
     if(!posts) {
       errors.posts = "No posts found"
       return res.status(404).json(errors)
@@ -46,11 +45,11 @@ router.post(
     if (!isValid) {
       return res.status(400).json(errors)
     }
+    console.log("on the backend")
     const post = new Post({
       ...req.body,
       user: req.user.id
     })
-
     post.save().then(post => res.json(post));
   }
 )
@@ -72,8 +71,7 @@ router.get('/:id', (req, res) => {
     //   fullPost.comments = comments
     //   res.json(fullPost)
     // })
-    console.log(post.comments);
-    res.json(post);
+    return res.json(post);
     // .catch(err => res.status(404).json({ nocomments: "No comments"}))
   })
   .catch(err => console.log(`Post could not be found because: ${err}`))
@@ -86,9 +84,10 @@ router.delete(
   '/:id',
   passport.authenticate('jwt', {session: false}),
   (req, res) => {
-    Post.findById(req.params.id)
+    Post.findById(req.params["id"])
     .then(post => {
       // Check for post owner
+
       if(post.user.toString() !== req.user.id) {
         return res.status(401).json({ notauthorized: "User not authorized"})
       }
@@ -97,6 +96,19 @@ router.delete(
     .catch(err => res.status(404).json({ postnotfound: "no post found"}))
   }
 )
+
+// @route GET api/posts/like
+// @desc get all likes from a post
+// Public
+router.get(
+  '/likes/:id',
+  (req, res) => {
+    Like.find({post: req.params.id})
+    .then(likes => res.json(likes))
+    .catch(err => console.log(err))
+  }
+)
+
 
 // @route POST api/posts/like/:id
 // @desc like a post
@@ -122,6 +134,7 @@ router.post(
     .catch(err => res.status(404).json({ postnotfound: "no post found"}))
   }
 )
+
 // @route POST api/posts/unlike/:id
 // @desc like a post
 // @access Private
@@ -146,6 +159,28 @@ router.post(
     .catch(err => res.status(404).json({ postnotfound: "no post found"}))
   }
 )
+
+// @route GET /api/posts/comments/:post_id
+// @desc get comments from a post
+// Public
+
+router.get(
+  `/comments/:post_id`,
+  (req, res) => {
+    Comment.find({post: req.params.post_id})
+    .then(comments => {
+      return res.json(comments)
+    })
+    .catch(err => console.log(err))
+  }
+)
+  // Comment.find({post: req.params.post_id })
+  //   .then(res => {
+  //     console.log(res)
+  //     return res.json({res: "hello"})
+  //   })
+  //   .catch(err => console.log(err))
+  // }
 
 // @route POST /posts/comment/:id
 // @desc add a comment

@@ -104,7 +104,7 @@ router.post('/login', (req, res) => {
         jwt.sign(
           payload,
           keys.secretOrKey,
-          { expiresIn: 3600 },
+          { expiresIn: 360000 },
           (err, token) => {
             res.json({
               success: true,
@@ -120,7 +120,7 @@ router.post('/login', (req, res) => {
   });
 })
 
-// @route GET api/routes/current
+// @route GET api/users/current
 // @desc return current user
 // @access Private
 router.get(
@@ -134,4 +134,15 @@ router.get(
     })
   }
 )
+
+// @route GET api/users/:user_id
+// @desc get user from id
+// @access Public
+router.get('/:user_id', (req, res) => {
+  User.findById(req.params.user_id)
+    .then(user => {
+      return res.json(user)
+    })
+    .catch(err => console.log(err))
+})
 module.exports = router;
