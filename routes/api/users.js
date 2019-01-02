@@ -87,7 +87,8 @@ router.post('/login', (req, res) => {
   const password = req.body.password;
 
   // Find user by email
-  User.findOne({email}).then(user => {
+  User.findOne({email})
+  .then(user => {
     // Check for user
     if (!user) {
       errors.login = "Incorrect user/password combination"
@@ -117,6 +118,7 @@ router.post('/login', (req, res) => {
         return res.status(400).json(errors);
       }
     })
+  .catch(err => console.log(err))
   });
 })
 

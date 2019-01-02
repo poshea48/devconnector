@@ -68,7 +68,6 @@ class App extends Component {
               <Route exact path="/profile/handle/:handle" component={Profile} />
               <Route exact path="/profile/user/:user_id" component={Profile} />
               <Route path="/not-found" component={NotFound} />
-
             </div>
 
             <Footer />

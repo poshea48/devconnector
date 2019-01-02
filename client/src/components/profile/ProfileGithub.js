@@ -20,9 +20,7 @@ class ProfileGithub extends React.Component {
           this.setState({ repos: res.data.repos })
         }
       })
-      .catch(err => {
-        console.log("inside componentDidMount error")
-      })
+      .catch(err => console.log(err))
   }
 
   render () {

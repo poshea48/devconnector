@@ -13,7 +13,8 @@ import isEmpty from '../../validation/is-empty'
 class Profile extends React.Component {
   componentDidMount() {
     const { handle, user_id } = this.props.match.params
-
+    // console.log(handle)
+    // console.log(user_id)
     handle && this.props.getProfileByHandle(handle)
     user_id && this.props.getProfileByUserId(user_id)
   }

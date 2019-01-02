@@ -198,7 +198,6 @@ router.post(
 // @desc get Github repos
 // @public
 router.get('/github/:username/', (req, res) => {
-  console.log('ok inside backend')
   const username = req.params.username
   const clientId = '9db0ace4a76202512a6a';
   const clientSecret = 'bb36a68cdccccf5ea792d6101f2e38e80ec79acc';
