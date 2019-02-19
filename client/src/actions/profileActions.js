@@ -5,7 +5,7 @@ import { GET_PROFILE, GET_PROFILES, PROFILE_LOADING, GET_ERRORS, CLEAR_CURRENT_P
 export const getCurrentProfile = () => dispatch => {
   console.log("actions")
   dispatch(setProfileLoading())
-  axios.get('/api/profile')
+  axios.get('/api/profile/')
     .then(res =>
       dispatch({
         type: GET_PROFILE,
